@@ -20,14 +20,17 @@ namespace S3WeatherApp.GUI.UserControls
     /// </summary>
     public partial class SearchCity : UserControl
     {
-        public SearchCity()
+        MainWindow mainWindow;
+        public SearchCity(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!string.IsNullOrWhiteSpace(searchBar.Text))
+                mainWindow.getTemperature(searchBar.Text);
         }
     }
 }

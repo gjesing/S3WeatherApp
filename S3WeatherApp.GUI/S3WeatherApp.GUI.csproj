@@ -104,5 +104,15 @@
   <ItemGroup>
     <Resource Include="Assets\Img\blue_sky.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\S3WeatherApp.Entities\S3WeatherApp.Entities.csproj">
+      <Project>{D0D61672-38EE-44F8-B059-64531BC39909}</Project>
+      <Name>S3WeatherApp.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\S3WeatherApp.Services\S3WeatherApp.Services.csproj">
+      <Project>{5C16916D-4D26-406F-9186-0860926B8923}</Project>
+      <Name>S3WeatherApp.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,10 @@
-﻿using System;
+﻿using S3WeatherApp.Entities;
+using S3WeatherApp.GUI.UserControls;
+using S3WeatherApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +27,35 @@ namespace S3WeatherApp.GUI
         public MainWindow()
         {
             InitializeComponent();
+            searcBar.Content = new SearchCity(this);
+        }
+
+        public void getTemperature(string city)
+        {
+            Task<WeatherData> task;
+            try
+            {
+                task = Client.GetCurrentTemperature(city);
+                task.Wait();
+                WeatherData weatherData = task.Result;
+                temperatureTextBlock.Text = weatherData.Temperature + "°C";
+                if (temperatureTextBlock.FontSize == 20)
+                    temperatureTextBlock.FontSize = 150;
+            }
+            catch (AggregateException ex) when(ex.InnerException is TimeoutException)
+            {
+                if (temperatureTextBlock.FontSize == 150)
+                    temperatureTextBlock.FontSize = 20;
+                temperatureTextBlock.Text = "Timeout. Svar ikke opnået på 5 sekunder.";
+                return;
+            }
+            catch (AggregateException ex) when(ex.InnerException is HttpListenerException)
+            {
+                if (temperatureTextBlock.FontSize == 150)
+                    temperatureTextBlock.FontSize = 20;
+                temperatureTextBlock.Text = $"Kunne ikke finde byen \"{city}\". Prøv at sikre dig, at du ikke har skrevet noget forkert.";
+                return;
+            }
         }
     }
 }
